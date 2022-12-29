@@ -39,18 +39,18 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/sshaction@master
         with:
-        host: ${{ secrets.HOSTNAME  }}
-        username: ${{ secrets.USER_NAME  }}
-        key: ${{ secrets.AMS_PRIVATE_KEY  }}
-        port: 22
-        script: |
-          docker rm -f fastapi-cicd
-          docker rmi Teky-Teka/fastapi-cicd:latest
-          docker ps
-          sleep 10
-          docker run -d -p 9000:80 --name fastapi-cicd Teky-Teka/fastapi-cicd:latest
-          docker ps
-          sleep 10
-          curl localhost:9000
-          ls
-          docker images
+          host: ${{ secrets.HOSTNAME  }}
+          username: ${{ secrets.USER_NAME  }}
+          key: ${{ secrets.AMS_PRIVATE_KEY  }}
+          port: 22
+          script: |
+            docker rm -f fastapi-cicd
+            docker rmi Teky-Teka/fastapi-cicd:latest
+            docker ps
+            sleep 10
+            docker run -d -p 9000:80 --name fastapi-cicd Teky-Teka/fastapi-cicd:latest
+            docker ps
+            sleep 10
+            curl localhost:9000
+            ls
+            docker images
