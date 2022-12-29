@@ -11,8 +11,8 @@ jobs:
   build-pudh-container:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
     - name: Build the Docker image
+    - uses: actions/checkout@v3
       run: |
         echo "SHORT_SHA=`git rev-parse --short HEAD`" >> ${GITHUB_SHA}
         echo "HOME: ${HOME}"
@@ -36,8 +36,8 @@ jobs:
     name: deploy
     runs-on: macos-latest
     steps:
-    - uses: appleboy/sshaction@master    
     - name: executing remote ssh commands using password
+    - uses: appleboy/sshaction@master
     with:
     host: ${{ secrets.HOSTNAME  }}
     username: ${{ secrets.USER_NAME  }}
