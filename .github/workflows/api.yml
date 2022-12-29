@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: executing remote ssh commands using password
-    - users appleboy/sshaction@master
+    - users: appleboy/sshaction@master
     with:
     host: ${{ secrets.HOSTNAME  }}
     username: ${{ secrets.USER_NAME  }}
