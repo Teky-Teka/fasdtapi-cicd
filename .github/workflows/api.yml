@@ -1,0 +1,47 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code
+# for more information see: https:help.github.com/actions/Language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Fast-API-CI-CD
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build-pudh-container:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    name: Build the Docker image
+      run: |
+        docker build -t Teky-Teka/fastapi-cicd:${GITHUB_SHA} .
+        docker tag Teky-Teka/fastapi-cicd:${GITHUB_SHA} Teky-Teka:${GITHUB_SHA}
+        sleep 10
+        curl localhost
+        docker login -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASSWD  }}
+        docker push Teky-Teka/fastapi-cicd:${{GITHUB_SHA}}
+        docker push Teky-Teka/fastapi-cicd:latest
+
+deploy:
+  needs: build-push-container
+  name: deploy
+  runs-on: macos-latest
+  steps:
+  - name: executing remote ssh commands using password
+  - users appleboy/sshaction@master
+  with:
+  host: ${{ secrets.HOSTNAME  }}
+  username: ${{ secrets.USER_NAME  }}
+  key: ${{ secrets.AMS_PRIVATE_KEY  }}
+  port: 22
+  script: |
+    docker rm -f fastapi-cicd
+    docker rmi Teky-Teka/fastapi-cicd:latest
+    docker ps
+    sleep 10
+    docker run -d -p 9000:80 --name fastapi-cicd Teky-Teka/fastapi-cicd:latest
+    docker ps
+    sleep 10
+    curl localhost:9000
+    ls
+    docker images
