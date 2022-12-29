@@ -11,8 +11,8 @@ jobs:
   build-pudh-container:
     runs-on: macos-latest
     steps:
+    - uses: actions/checkout@v3
     - name: Build the Docker image
-      uses: actions/checkout@v3
       run: |
         echo "SHORT_SHA=`git rev-parse --short HEAD`" >> ${GITHUB_SHA}
         echo "HOME: ${HOME}"
@@ -38,19 +38,19 @@ jobs:
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/sshaction@master
-    with:
-    host: ${{ secrets.HOSTNAME  }}
-    username: ${{ secrets.USER_NAME  }}
-    key: ${{ secrets.AMS_PRIVATE_KEY  }}
-    port: 22
-    script: |
-      docker rm -f fastapi-cicd
-      docker rmi Teky-Teka/fastapi-cicd:latest
-      docker ps
-      sleep 10
-      docker run -d -p 9000:80 --name fastapi-cicd Teky-Teka/fastapi-cicd:latest
-      docker ps
-      sleep 10
-      curl localhost:9000
-      ls
-      docker images
+        with:
+        host: ${{ secrets.HOSTNAME  }}
+        username: ${{ secrets.USER_NAME  }}
+        key: ${{ secrets.AMS_PRIVATE_KEY  }}
+        port: 22
+        script: |
+          docker rm -f fastapi-cicd
+          docker rmi Teky-Teka/fastapi-cicd:latest
+          docker ps
+          sleep 10
+          docker run -d -p 9000:80 --name fastapi-cicd Teky-Teka/fastapi-cicd:latest
+          docker ps
+          sleep 10
+          curl localhost:9000
+          ls
+          docker images
