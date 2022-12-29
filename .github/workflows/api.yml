@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Build the Docker image
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
       run: |
         echo "SHORT_SHA=`git rev-parse --short HEAD`" >> ${GITHUB_SHA}
         echo "HOME: ${HOME}"
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: executing remote ssh commands using password
-    - uses: appleboy/sshaction@master
+      uses: appleboy/sshaction@master
     with:
     host: ${{ secrets.HOSTNAME  }}
     username: ${{ secrets.USER_NAME  }}
